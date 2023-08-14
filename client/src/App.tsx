@@ -1,7 +1,7 @@
-import { MapContainer, TileLayer } from 'react-leaflet'
+import { MapContainer, WMSTileLayer } from 'react-leaflet'
 import './app.css'
 import 'leaflet/dist/leaflet.css'
-import { useState } from 'react'
+/* import { useState } from 'react'
 
 
 const LAYERS = {
@@ -11,20 +11,30 @@ const LAYERS = {
   terreno:'http://{s}.google.com/vt/lyrs=p&x={x}&y={y}&z={z}'
 } as const;
 
-type Layer = (typeof LAYERS)[keyof typeof LAYERS];
+type Layer = (typeof LAYERS)[keyof typeof LAYERS]; */
 
 function App() {
-  const [layer, setLayer]=useState<Layer>(LAYERS.calles);
+  /* const [layer, setLayer]=useState<Layer>(LAYERS.calles); */
+  const wmsOTB = `http://186.121.246.218:6080/arcgis/services/planificacion/otbsDb/MapServer/WMSServer`;
+  const wmsDEM = `http://186.121.246.218:6080/arcgis/services/catastro/DEM_500/MapServer/WMSServer`;
 
   return (
     <>
       <MapContainer id='Mapa' center={[-17.39481762066563, -66.1594660433327]} zoom={13} zoomControl={false}>
-        <TileLayer 
-          url={layer}
-          subdomains={['mt0', 'mt1', 'mt2', 'mt3']}
+        <WMSTileLayer
+          url={wmsDEM}
+          layers="0"
+          format="image/png"
+          transparent={true}
+        />
+        <WMSTileLayer
+          url={wmsOTB}
+          layers="0"
+          format="image/png"
+          transparent={true}
         />
       </MapContainer>
-      <div className='button-view'>
+      {/* <div className='button-view'>
         <button onClick={()=> setLayer(LAYERS.calles)}>
           Streets
         </button>
@@ -37,7 +47,7 @@ function App() {
         <button onClick={()=> setLayer(LAYERS.terreno)}>
           Terreno
         </button>
-      </div>
+      </div> */}
     </>
   )
 }
