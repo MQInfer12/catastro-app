@@ -1,6 +1,6 @@
-import { MapContainer, WMSTileLayer } from 'react-leaflet'
-import './app.css'
-import 'leaflet/dist/leaflet.css'
+import { MapContainer, WMSTileLayer } from "react-leaflet";
+import "./app.css";
+import "leaflet/dist/leaflet.css";
 /* import { useState } from 'react'
 
 
@@ -18,9 +18,24 @@ function App() {
   const wmsOTB = `http://186.121.246.218:6080/arcgis/services/planificacion/otbsDb/MapServer/WMSServer`;
   const wmsDEM = `http://186.121.246.218:6080/arcgis/services/catastro/DEM_500/MapServer/WMSServer`;
 
+  const wmsNameStreet = `http://186.121.246.218:6080/arcgis/services/planificacion/viasWms/MapServer/WMSServer`;
+  const wmsNumberApple = `http://186.121.246.218:6080/arcgis/services/catastro/manzanasWms/MapServer/WMSServer`;
+  //
+
+  console.log(wmsNameStreet)
+
   return (
     <>
-      <MapContainer id='Mapa' center={[-17.39481762066563, -66.1594660433327]} zoom={13} zoomControl={false}>
+      <form className="inputContainer">
+        <input type="text" placeholder="Buscar" />
+        <button>Buscar</button>
+      </form>
+      <MapContainer
+        id="Mapa"
+        center={[-17.39481762066563, -66.1594660433327]}
+        zoom={13}
+        zoomControl={false}
+      >
         <WMSTileLayer
           url={wmsDEM}
           layers="0"
@@ -29,6 +44,20 @@ function App() {
         />
         <WMSTileLayer
           url={wmsOTB}
+          layers="0"
+          format="image/png"
+          transparent={true}
+        />
+
+        <WMSTileLayer
+          url={wmsNameStreet}
+          layers="0"
+          format="image/png"
+          transparent={true}
+        />
+
+        <WMSTileLayer
+          url={wmsNumberApple}
           layers="0"
           format="image/png"
           transparent={true}
@@ -49,7 +78,7 @@ function App() {
         </button>
       </div> */}
     </>
-  )
+  );
 }
 
-export default App
+export default App;
