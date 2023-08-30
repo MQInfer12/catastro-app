@@ -1,6 +1,7 @@
 import { MapContainer, WMSTileLayer } from "react-leaflet";
 import "./app.css";
 import "leaflet/dist/leaflet.css";
+import { useState, useEffect } from "react";
 /* import { useState } from 'react'
 
 
@@ -22,14 +23,50 @@ function App() {
   const wmsNumberApple = `http://186.121.246.218:6080/arcgis/services/catastro/manzanasWms/MapServer/WMSServer`;
   //
 
-  console.log(wmsNameStreet)
+  const [searchInput, setSearchInput] = useState("");
+
+  const handleSearch = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    e.preventDefault();
+    /*     const firstUrl =
+      "http://186.121.246.218:6080/arcgis/services/planificacion/viasWms?";
+    const secondUrl = "/MapServer/WMSServer";
+    const result = firstUrl + searchInput + secondUrl;
+    setSearchLayer(result); */
+  };
+
+  useEffect(() => {
+    const handleGetData = async () => {
+      try {
+        const response = await fetch(wmsNumberApple, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+
+        if (response.ok) {
+          const result = await response.json();
+          console.log(result);
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    handleGetData();
+  }, [wmsNumberApple]);
 
   return (
     <>
       <form className="inputContainer">
-        <input type="text" placeholder="Buscar" />
-        <button>Buscar</button>
+        <input
+          type="text"
+          placeholder="Buscar"
+          value={searchInput}
+          onChange={(e) => setSearchInput(e.target.value)}
+        />
+        <button onClick={(e) => handleSearch(e)}>Buscar</button>
       </form>
+
       <MapContainer
         id="Mapa"
         center={[-17.39481762066563, -66.1594660433327]}
@@ -55,6 +92,15 @@ function App() {
           format="image/png"
           transparent={true}
         />
+        {/* 
+        {searchLayer && (
+          <WMSTileLayer
+            url={searchLayer}
+            layers="0"
+            format="image/png"
+            transparent={true}
+          />
+        )} */}
 
         <WMSTileLayer
           url={wmsNumberApple}
@@ -63,7 +109,14 @@ function App() {
           transparent={true}
         />
       </MapContainer>
-      {/* <div className='button-view'>
+    </>
+  );
+}
+
+export default App;
+
+{
+  /* <div className='button-view'>
         <button onClick={()=> setLayer(LAYERS.calles)}>
           Streets
         </button>
@@ -76,9 +129,5 @@ function App() {
         <button onClick={()=> setLayer(LAYERS.terreno)}>
           Terreno
         </button>
-      </div> */}
-    </>
-  );
+      </div> */
 }
-
-export default App;
